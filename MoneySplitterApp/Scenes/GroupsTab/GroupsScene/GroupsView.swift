@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GroupsView: View {
-    @Binding var coordinator: GroupsTabCoordinator
+    @Environment(\.groupsTabCoordinator) private var coordinator
 
     var body: some View {
         List {

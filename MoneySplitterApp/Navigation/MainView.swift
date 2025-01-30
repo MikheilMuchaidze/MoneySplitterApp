@@ -43,7 +43,7 @@ struct MainView: View {
 
     // MARK: - Tabs
 
-    @State var selectedTab: BottomTabBarItem = .overviews
+    @State private var selectedTab: BottomTabBarItem = .overviews
     @State private var allTabs: [AnimatedTab] = BottomTabBarItem.allCases.compactMap { tab -> AnimatedTab? in
             .init(tab: tab)
     }
@@ -59,13 +59,16 @@ struct MainView: View {
             }
             tabView()
         }
+        .environment(\.overviewTabCoordinator, overviewTabCoordinator)
+        .environment(\.groupsTabCoordinator, groupsTabCoordinator)
+        .environment(\.settingsTabCoordinator, settingsTabCoordinator)
     }
 
     // MARK: - Overviews Tab
 
     private var overviewsTab: some View {
         NavigationStack(path: $overviewTabCoordinator.path) {
-            OverviewView(coordinator: $overviewTabCoordinator)
+            OverviewView()
                 .registerViewsForCoordinatorOnOverviewsTab(overviewTabCoordinator)
                 .registerSheetViewsForCoordinatorOnOverviewsTab(sheetDestinations: $overviewTabCoordinator.presentedSheet)
                 .toolbar(.hidden, for: .tabBar)
@@ -83,7 +86,7 @@ struct MainView: View {
 
     private var groupsTab: some View {
         NavigationStack(path: $groupsTabCoordinator.path) {
-            GroupsView(coordinator: $groupsTabCoordinator)
+            GroupsView()
                 .toolbar(.hidden, for: .tabBar)
         }
         .tabItem {
@@ -99,7 +102,7 @@ struct MainView: View {
 
     private var settingsTab: some View {
         NavigationStack(path: $settingsTabCoordinator.path) {
-            SettingsView(coordinator: $settingsTabCoordinator)
+            SettingsView()
                 .toolbar(.hidden, for: .tabBar)
         }
         .tabItem {

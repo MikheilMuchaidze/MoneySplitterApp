@@ -9,7 +9,7 @@ import SwiftUI
 
 @MainActor
 extension View {
-    func registerViewsForCoordinatorOnOverviewsTab(_ coordinatorPath: OverviewsTabCoordinator) -> some View {
+    func registerViewsForCoordinatorOnOverviewsTab(_ coordinatorPath: any CoordinatorProtocol) -> some View {
         navigationDestination(for: OverviewsTabRoutes.self) { destination in
             switch destination {
             case .overviewDetails:

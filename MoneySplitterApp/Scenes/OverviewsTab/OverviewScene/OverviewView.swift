@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OverviewView: View {
-    @Binding var coordinator: OverviewsTabCoordinator
+    @Environment(\.overviewTabCoordinator) private var coordinator
 
     var body: some View {
         List {

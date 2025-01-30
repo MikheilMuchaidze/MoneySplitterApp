@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Binding var coordinator: SettingsTabCoordinator
+    @Environment(\.settingsTabCoordinator) private var coordinator
 
     var body: some View {
         HStack {
