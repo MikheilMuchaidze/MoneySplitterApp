@@ -12,7 +12,7 @@ enum BottomTabBarItem: String, CaseIterable {
     case groups
     case settings
 
-    var systemImage: String {
+    var image: String {
         switch self {
         case .overviews:
             return "house.fill"
@@ -74,12 +74,6 @@ struct MainView: View {
                 .registerSheetViewsForCoordinatorOnOverviewsTab(sheetDestinations: $overviewTabCoordinator.presentedSheet)
                 .toolbar(.hidden, for: .tabBar)
         }
-        .tabItem {
-            Label(
-                BottomTabBarItem.overviews.rawValue,
-                systemImage: BottomTabBarItem.overviews.systemImage
-            )
-        }
         .tag(BottomTabBarItem.overviews)
     }
 
@@ -89,12 +83,6 @@ struct MainView: View {
         NavigationStack(path: $groupsTabCoordinator.path) {
             GroupsView()
                 .toolbar(.hidden, for: .tabBar)
-        }
-        .tabItem {
-            Label(
-                BottomTabBarItem.groups.rawValue,
-                systemImage: BottomTabBarItem.groups.systemImage
-            )
         }
         .tag(BottomTabBarItem.groups)
     }
@@ -106,12 +94,6 @@ struct MainView: View {
             SettingsView()
                 .toolbar(.hidden, for: .tabBar)
         }
-        .tabItem {
-            Label(
-                BottomTabBarItem.settings.rawValue,
-                systemImage: BottomTabBarItem.settings.systemImage
-            )
-        }
         .tag(BottomTabBarItem.settings)
     }
 
@@ -122,20 +104,20 @@ struct MainView: View {
         HStack(spacing: 0) {
             ForEach($allTabs) { $animatedTab in
                 let tab = animatedTab.tab
+                let tabBarItemFrame = 70.0
+                let imageFrame = 25.0
 
-                VStack(spacing: 6) {
-                    Image(systemName: tab.systemImage)
-                        .font(.title2)
-                        .symbolEffect(.bounce.down.byLayer, value: animatedTab.isAnimating)
-
-                    Text(tab.rawValue.capitalized)
-                        .font(.caption)
-                        .fontWeight(.medium)
-                }
-                .frame(maxWidth: .infinity)
+                Image(systemName: tab.image)
+                    .resizable()
+                    .symbolEffect(.bounce.down.byLayer, value: animatedTab.isAnimating)
+                    .scaledToFill()
+                    .frame(
+                        width: imageFrame,
+                        height: imageFrame
+                    )
+                .frame(width: tabBarItemFrame, height: tabBarItemFrame)
                 .foregroundStyle(selectedTab == tab ? Color.purple : Color.white.opacity(0.7))
-                .padding(.vertical, 15)
-                .contentShape(Rectangle())
+                .padding(.horizontal, 10)
                 .onTapGesture {
                     withAnimation(.bouncy(duration: 0.1)) {
                         HapticFeedbackManager().impact(style: .soft)
@@ -147,13 +129,11 @@ struct MainView: View {
                 }
             }
         }
-        .padding(.horizontal, 25)
         .background(
             Color.black
-                .clipShape(RoundedRectangle(cornerRadius: 30))
+                .clipShape(RoundedRectangle(cornerRadius: 35))
                 .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 4)
         )
-        .padding(.horizontal, 20)
         .padding(.bottom, 20)
     }
 }
