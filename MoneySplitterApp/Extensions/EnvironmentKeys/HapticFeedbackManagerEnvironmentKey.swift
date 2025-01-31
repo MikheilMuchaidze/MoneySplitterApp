@@ -8,7 +8,7 @@
 import SwiftUI
 
 private struct HapticFeedbackManagerEnvironmentKey: EnvironmentKey {
-    static let defaultValue = HapticFeedbackManager()
+    static let defaultValue: HapticFeedbackManager = DefaultHapticFeedbackManager()
 }
 
 extension EnvironmentValues {

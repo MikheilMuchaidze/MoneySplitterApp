@@ -9,10 +9,31 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.settingsTabCoordinator) private var coordinator
+    @Environment(\.themeManager) private var themeManager
 
     var body: some View {
-        HStack {
-            Spacer()
+        VStack {
+            Picker("Theme?", selection: .init(get: {
+                themeManager.selectedTheme
+            }, set: { selectedIndex in
+                switch selectedIndex {
+                case .light:
+                    themeManager.changeTheme(to: .light)
+                case .dark:
+                    themeManager.changeTheme(to: .dark)
+                case .system:
+                    themeManager.changeTheme(to: .system)
+                }
+            })) {
+                Text("Light")
+                    .tag(ThemeType.light)
+                Text("Dark")
+                    .tag(ThemeType.dark)
+                Text("System")
+                    .tag(ThemeType.system)
+            }
+            .pickerStyle(.segmented)
+
             Text("SettingsView")
                 .font(.headline)
             Spacer()
@@ -21,4 +42,9 @@ struct SettingsView: View {
         .background(Color.gray.opacity(0.2))
         .cornerRadius(8)
     }
+}
+
+#Preview {
+    SettingsView()
+        .environment(\.themeManager, ThemeManager())
 }

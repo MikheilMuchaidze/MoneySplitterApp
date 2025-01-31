@@ -7,8 +7,6 @@
 
 import Foundation
 
-protocol OverviewsTabCoordinatorProtocol: CoordinatorProtocol where Sheet == OverviewsTabSheets, Route == OverviewsTabRoutes {}
-
 @Observable
 final class OverviewsTabCoordinator: CoordinatorProtocol {
     // MARK: - Properties

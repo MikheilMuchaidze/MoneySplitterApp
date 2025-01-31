@@ -48,6 +48,11 @@ struct MainView: View {
             .init(tab: tab)
     }
 
+    // MARK: - Themes
+
+    @Environment(\.themeManager) private var themeManager
+    @Environment(\.colorScheme) private var colorScheme // Detects system mode
+
     // MARK: - Body
 
     var body: some View {
@@ -62,7 +67,8 @@ struct MainView: View {
         .environment(\.overviewTabCoordinator, overviewTabCoordinator)
         .environment(\.groupsTabCoordinator, groupsTabCoordinator)
         .environment(\.settingsTabCoordinator, settingsTabCoordinator)
-        .environment(\.hapticFeedbackManager, HapticFeedbackManager())
+        .environment(\.hapticFeedbackManager, DefaultHapticFeedbackManager())
+        .environment(\.themeManager, themeManager)
     }
 
     // MARK: - Overviews Tab
@@ -104,37 +110,43 @@ struct MainView: View {
         HStack(spacing: 0) {
             ForEach($allTabs) { $animatedTab in
                 let tab = animatedTab.tab
-                let tabBarItemFrame = 70.0
-                let imageFrame = 25.0
 
-                Image(systemName: tab.image)
-                    .resizable()
-                    .symbolEffect(.bounce.down.byLayer, value: animatedTab.isAnimating)
-                    .scaledToFill()
-                    .frame(
-                        width: imageFrame,
-                        height: imageFrame
-                    )
-                .frame(width: tabBarItemFrame, height: tabBarItemFrame)
-                .foregroundStyle(selectedTab == tab ? Color.purple : Color.white.opacity(0.7))
-                .padding(.horizontal, 10)
+                VStack {
+                    Image(systemName: tab.image)
+                        .resizable()
+                        .symbolEffect(
+                            .bounce.down.byLayer,
+                            value: animatedTab.isAnimating
+                        )
+                        .scaledToFit()
+                    Spacer()
+                    Text(tab.rawValue)
+                }
+                .padding(.horizontal, 20)
+                .foregroundStyle(
+                    selectedTab == tab
+                    ? themeManager.activeTheme.primarySelectedColor
+                    : themeManager.activeTheme.primaryDeselectedColor
+                )
                 .onTapGesture {
                     withAnimation(.bouncy(duration: 0.1)) {
-                        HapticFeedbackManager().impact(style: .soft)
+                        DefaultHapticFeedbackManager().impact(style: .soft)
                         selectedTab = tab
                         animatedTab.isAnimating = true
                     }
-
                     animatedTab.isAnimating = nil
                 }
             }
         }
+        .frame(
+            width: .infinity,
+            height: 50
+        )
+        .padding(.vertical, 10)
         .background(
             Color.black
-                .clipShape(RoundedRectangle(cornerRadius: 35))
-                .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 4)
+                .clipShape(RoundedRectangle(cornerRadius: 30))
         )
-        .padding(.bottom, 20)
     }
 }
 

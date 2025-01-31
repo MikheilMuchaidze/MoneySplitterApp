@@ -9,8 +9,19 @@ import SwiftUI
 
 struct OverviewView: View {
     @Environment(\.overviewTabCoordinator) private var coordinator
+    @State private var favoriteColor = 0
 
     var body: some View {
+        Picker("Theme?", selection: $favoriteColor) {
+            Text("Light")
+                .tag(3)
+            Text("Dark")
+                .tag(1)
+            Text("System")
+                .tag(2)
+        }
+        .pickerStyle(.segmented)
+
         List {
             Button("Go to Detail") {
                 coordinator.navigate(to: .overviewDetails)
@@ -39,4 +50,8 @@ struct OverviewDetailsSheet: View {
         Text("Home Detail Sheet: \(id.uuidString)")
             .presentationDetents([.medium])
     }
+}
+
+#Preview {
+    OverviewView()
 }
