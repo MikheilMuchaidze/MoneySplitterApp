@@ -62,6 +62,7 @@ struct MainView: View {
         .environment(\.overviewTabCoordinator, overviewTabCoordinator)
         .environment(\.groupsTabCoordinator, groupsTabCoordinator)
         .environment(\.settingsTabCoordinator, settingsTabCoordinator)
+        .environment(\.hapticFeedbackManager, HapticFeedbackManager())
     }
 
     // MARK: - Overviews Tab
@@ -136,7 +137,8 @@ struct MainView: View {
                 .padding(.vertical, 15)
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    withAnimation(.bouncy) {
+                    withAnimation(.bouncy(duration: 0.1)) {
+                        HapticFeedbackManager().impact(style: .soft)
                         selectedTab = tab
                         animatedTab.isAnimating = true
                     }
