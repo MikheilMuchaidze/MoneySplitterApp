@@ -16,14 +16,20 @@ enum ThemeType: String, CaseIterable, Hashable {
 struct AppTheme: Hashable {
     var primarySelectedColor: Color
     var primaryDeselectedColor: Color
+    var primaryBackgroundColor: Color
+    var tabViewColor: Color
 
     static let light = AppTheme(
         primarySelectedColor: .purple,
-        primaryDeselectedColor: .white
+        primaryDeselectedColor: .white,
+        primaryBackgroundColor: .gray.opacity(0.1),
+        tabViewColor: .black
     )
     static let dark = AppTheme(
-        primarySelectedColor: .white,
-        primaryDeselectedColor: .red
+        primarySelectedColor: .purple,
+        primaryDeselectedColor: .black,
+        primaryBackgroundColor: .gray.opacity(0.1),
+        tabViewColor: .white
     )
 
     static func getTheme(
@@ -32,16 +38,15 @@ struct AppTheme: Hashable {
     ) -> AppTheme {
         switch type {
         case .light:
-            return .light
+                .light
         case .dark:
-            return .dark
+                .dark
         case .system:
             if UITraitCollection.current.userInterfaceStyle == .light {
-                return .light
+                .light
             } else {
-                return .dark
+                .dark
             }
-//            return colorScheme == .dark ? .dark : .light
         }
     }
 }
@@ -75,4 +80,3 @@ final class ThemeManager: ThemeManagerProtocol {
         activeTheme = AppTheme.getTheme(for: theme, colorScheme: nil)
     }
 }
-

@@ -12,16 +12,6 @@ struct OverviewView: View {
     @State private var favoriteColor = 0
 
     var body: some View {
-        Picker("Theme?", selection: $favoriteColor) {
-            Text("Light")
-                .tag(3)
-            Text("Dark")
-                .tag(1)
-            Text("System")
-                .tag(2)
-        }
-        .pickerStyle(.segmented)
-
         List {
             Button("Go to Detail") {
                 coordinator.navigate(to: .overviewDetails)

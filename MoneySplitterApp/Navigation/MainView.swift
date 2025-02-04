@@ -51,7 +51,7 @@ struct MainView: View {
     // MARK: - Themes
 
     @Environment(\.themeManager) private var themeManager
-    @Environment(\.colorScheme) private var colorScheme // Detects system mode
+    @Environment(\.colorScheme) private var colorScheme
 
     // MARK: - Body
 
@@ -69,6 +69,13 @@ struct MainView: View {
         .environment(\.settingsTabCoordinator, settingsTabCoordinator)
         .environment(\.hapticFeedbackManager, DefaultHapticFeedbackManager())
         .environment(\.themeManager, themeManager)
+        .onChange(of: colorScheme) { _, newValue in
+            if themeManager.selectedTheme == .system {
+                newValue == .dark
+                    ? themeManager.changeTheme(to: .dark)
+                    : themeManager.changeTheme(to: .light)
+            }
+        }
     }
 
     // MARK: - Overviews Tab
@@ -139,17 +146,21 @@ struct MainView: View {
             }
         }
         .frame(
-            width: .infinity,
-            height: 50
+            maxWidth: .infinity,
+            minHeight: 50,
+            maxHeight: 50
         )
         .padding(.vertical, 10)
         .background(
-            Color.black
+            themeManager.activeTheme.tabViewColor
                 .clipShape(RoundedRectangle(cornerRadius: 30))
         )
+        .padding(.horizontal, 40)
+        .background(.gray.opacity(0.4))
     }
 }
 
 #Preview {
     MainView()
+        .environment(\.themeManager, ThemeManager())
 }
