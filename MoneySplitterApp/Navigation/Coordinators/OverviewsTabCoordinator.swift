@@ -19,7 +19,7 @@ final class OverviewsTabCoordinator: CoordinatorProtocol {
 
     nonisolated init() {}
 
-    // MARK: - Methods
+    // MARK: - Functions
 
     func navigate(to destination: OverviewsTabRoutes) {
         path.append(destination)

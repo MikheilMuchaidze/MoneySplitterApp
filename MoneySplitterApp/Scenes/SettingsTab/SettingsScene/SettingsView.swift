@@ -33,11 +33,16 @@ struct SettingsView: View {
                     .tag(ThemeType.system)
             }
             .pickerStyle(.segmented)
-
-            Text("SettingsView")
-                .font(.headline)
             Spacer()
+            List {
+                ForEach(0..<50) { _ in
+                    Text("SettingsView")
+                        .font(.headline)
+                }
+            }
         }
+        .navigationTitle("SettingsView")
+        .transition(.scale)
         .padding()
         .background(Color.gray.opacity(0.2))
         .cornerRadius(8)
@@ -47,4 +52,10 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .environment(\.themeManager, ThemeManager())
+}
+
+struct SettingsViewDetails: View {
+    var body: some View {
+        Text("SettingsViewDetails")
+    }
 }

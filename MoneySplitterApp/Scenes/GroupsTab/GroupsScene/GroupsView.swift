@@ -19,3 +19,9 @@ struct GroupsView: View {
         .navigationTitle("GroupsView")
     }
 }
+
+struct GroupsViewDetails: View {
+    var body: some View {
+        Text("GroupsViewDetails")
+    }
+}

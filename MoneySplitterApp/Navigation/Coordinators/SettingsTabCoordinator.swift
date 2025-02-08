@@ -19,7 +19,7 @@ final class SettingsTabCoordinator: CoordinatorProtocol {
 
     nonisolated init() {}
 
-    // MARK: - Methods
+    // MARK: - Functions
 
     func navigate(to destination: SettingsTabRoutes) {
         path.append(destination)

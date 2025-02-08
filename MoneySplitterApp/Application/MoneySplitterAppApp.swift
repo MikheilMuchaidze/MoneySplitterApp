@@ -9,8 +9,12 @@ import SwiftUI
 
 @main
 struct MoneySplitterAppApp: App {
+    //MARK: - Properties
+    
     @State private var themeManager = ThemeManager()
 
+    //MARK: - Main Body
+    
     var body: some Scene {
         WindowGroup {
             MainView()

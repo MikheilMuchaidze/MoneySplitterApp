@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NavigationPathProtocol: Hashable, Identifiable {}
+protocol NavigationPathProtocol: Hashable, Identifiable, CaseIterable {}
 
 extension NavigationPathProtocol {
     var id: String {

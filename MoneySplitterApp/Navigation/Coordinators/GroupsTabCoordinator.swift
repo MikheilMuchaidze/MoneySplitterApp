@@ -19,7 +19,7 @@ final class GroupsTabCoordinator: CoordinatorProtocol {
 
     nonisolated init() {}
 
-    // MARK: - Methods
+    // MARK: - Functions
 
     func navigate(to destination: GroupsTabRoutes) {
         path.append(destination)

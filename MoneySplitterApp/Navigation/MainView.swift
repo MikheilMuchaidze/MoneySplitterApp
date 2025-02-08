@@ -71,9 +71,7 @@ struct MainView: View {
         .environment(\.themeManager, themeManager)
         .onChange(of: colorScheme) { _, newValue in
             if themeManager.selectedTheme == .system {
-                newValue == .dark
-                    ? themeManager.changeTheme(to: .dark)
-                    : themeManager.changeTheme(to: .light)
+                themeManager.changeThemeDuringSystemType(newValue)
             }
         }
     }
@@ -83,8 +81,8 @@ struct MainView: View {
     private var overviewsTab: some View {
         NavigationStack(path: $overviewTabCoordinator.path) {
             OverviewView()
-                .registerViewsForCoordinatorOnOverviewsTab(overviewTabCoordinator)
-                .registerSheetViewsForCoordinatorOnOverviewsTab(sheetDestinations: $overviewTabCoordinator.presentedSheet)
+                .registerViewsFor(navigationPaths: OverviewsTabRoutes.allCases)
+                .registerSheetViewsFor(sheetDestinations: $overviewTabCoordinator.presentedSheet)
                 .toolbar(.hidden, for: .tabBar)
         }
         .tag(BottomTabBarItem.overviews)
@@ -95,6 +93,8 @@ struct MainView: View {
     private var groupsTab: some View {
         NavigationStack(path: $groupsTabCoordinator.path) {
             GroupsView()
+                .registerViewsFor(navigationPaths: GroupsTabRoutes.allCases)
+                .registerSheetViewsFor(sheetDestinations: $groupsTabCoordinator.presentedSheet)
                 .toolbar(.hidden, for: .tabBar)
         }
         .tag(BottomTabBarItem.groups)
@@ -105,6 +105,8 @@ struct MainView: View {
     private var settingsTab: some View {
         NavigationStack(path: $settingsTabCoordinator.path) {
             SettingsView()
+                .registerViewsFor(navigationPaths: SettingsTabRoutes.allCases)
+                .registerSheetViewsFor(sheetDestinations: $settingsTabCoordinator.presentedSheet)
                 .toolbar(.hidden, for: .tabBar)
         }
         .tag(BottomTabBarItem.settings)
@@ -156,7 +158,7 @@ struct MainView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 30))
         )
         .padding(.horizontal, 40)
-        .background(.gray.opacity(0.4))
+        .background(themeManager.activeTheme.tabViewBackgroundColor)
     }
 }
 

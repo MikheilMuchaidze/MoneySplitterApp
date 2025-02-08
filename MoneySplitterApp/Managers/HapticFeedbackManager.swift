@@ -20,7 +20,7 @@ struct DefaultHapticFeedbackManager: HapticFeedbackManager {
     private let generatorNotification = UINotificationFeedbackGenerator()
     private let generatorSelection = UISelectionFeedbackGenerator()
 
-    // MARK: - Public Methods
+    // MARK: - Public Functions
 
     /// Generates impact feedback (light, medium, heavy, rigid, soft)
     func impact(style: UIImpactFeedbackGenerator.FeedbackStyle) {
