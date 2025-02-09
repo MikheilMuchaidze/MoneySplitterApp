@@ -23,6 +23,8 @@ struct SettingsView: View {
                     themeManager.changeTheme(to: .dark)
                 case .system:
                     themeManager.changeTheme(to: .system)
+                default:
+                    break
                 }
             })) {
                 Text("Light")

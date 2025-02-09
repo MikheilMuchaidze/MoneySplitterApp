@@ -8,7 +8,7 @@
 import SwiftUI
 
 protocol ThemeManagerProtocol {
-    var selectedTheme: ThemeType { get set }
+    var selectedTheme: ThemeType? { get set }
     var activeTheme: AppTheme { get }
 
     func changeTheme(to theme: ThemeType)
@@ -19,18 +19,21 @@ protocol ThemeManagerProtocol {
 final class ThemeManager: ThemeManagerProtocol {
     //MARK: - Properties
     
-    var selectedTheme: ThemeType {
+    var selectedTheme: ThemeType? {
         didSet {
-            UserDefaults.standard.set(selectedTheme.rawValue, forKey: "selectedTheme") // Persist selection
+            selectedThemeStorage = selectedTheme?.rawValue ?? "system"
         }
     }
-
-    var activeTheme: AppTheme
+    var activeTheme: AppTheme = .light
+    
+    //MARK: - Storage Properties
+    
+    @ObservationIgnored @AppStorage("selectedTheme") private var selectedThemeStorage = "system"
     
     //MARK: - Init
 
     init() {
-        let savedTheme = ThemeType(rawValue: UserDefaults.standard.string(forKey: "selectedTheme") ?? "system") ?? .system
+        let savedTheme = ThemeType(rawValue: selectedThemeStorage) ?? .system
         self.selectedTheme = savedTheme
         self.activeTheme = AppTheme.getTheme(for: savedTheme, colorScheme: nil)
     }
