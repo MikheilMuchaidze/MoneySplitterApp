@@ -104,7 +104,7 @@ struct MainView: View {
 
     private var settingsTab: some View {
         NavigationStack(path: $settingsTabCoordinator.path) {
-            SettingsView()
+            SettingsView(selectedIndex: themeManager.selectedThemeIndex)
                 .registerViewsFor(navigationPaths: SettingsTabRoutes.allCases)
                 .registerSheetViewsFor(sheetDestinations: $settingsTabCoordinator.presentedSheet)
                 .toolbar(.hidden, for: .tabBar)

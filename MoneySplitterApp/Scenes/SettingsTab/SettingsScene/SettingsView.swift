@@ -10,38 +10,28 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.settingsTabCoordinator) private var coordinator
     @Environment(\.themeManager) private var themeManager
-
+        
+    @State private var selectedIndex: Int
+    let segments = ThemeType.allCases.map { $0.rawValue }
+    
+    init(selectedIndex: Int) {
+        self.selectedIndex = selectedIndex
+    }
+    
     var body: some View {
         VStack {
-            Picker("Theme?", selection: .init(get: {
-                themeManager.selectedTheme
-            }, set: { selectedIndex in
-                switch selectedIndex {
-                case .light:
-                    themeManager.changeTheme(to: .light)
-                case .dark:
-                    themeManager.changeTheme(to: .dark)
-                case .system:
-                    themeManager.changeTheme(to: .system)
-                default:
-                    break
+            CustomSegmentedPicker(
+                selectedIndex: $selectedIndex,
+                segments: segments,
+                textColor: themeManager.activeTheme.primaryDeselectedColor,
+                selectedSegmentBackgroundColor: themeManager.activeTheme.primarySelectedColor,
+                unselectedSegmentBackgroundColor: themeManager.activeTheme.primaryBackgroundColor,
+                onSegmentChange: {
+                    changeTheme()
                 }
-            })) {
-                Text("Light")
-                    .tag(ThemeType.light)
-                Text("Dark")
-                    .tag(ThemeType.dark)
-                Text("System")
-                    .tag(ThemeType.system)
-            }
-            .pickerStyle(.segmented)
+            )
+            
             Spacer()
-            List {
-                ForEach(0..<50) { _ in
-                    Text("SettingsView")
-                        .font(.headline)
-                }
-            }
         }
         .navigationTitle("SettingsView")
         .transition(.scale)
@@ -49,10 +39,25 @@ struct SettingsView: View {
         .background(Color.gray.opacity(0.2))
         .cornerRadius(8)
     }
+    
+    //MARK: - Privet Functions
+    
+    func changeTheme() {
+        switch selectedIndex {
+        case 0:
+            themeManager.changeTheme(to: .light)
+        case 1:
+            themeManager.changeTheme(to: .dark)
+        case 2:
+            themeManager.changeTheme(to: .system)
+        default:
+            break
+        }
+    }
 }
 
 #Preview {
-    SettingsView()
+    SettingsView(selectedIndex: ThemeManager().selectedThemeIndex)
         .environment(\.themeManager, ThemeManager())
 }
 
